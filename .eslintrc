@@ -78,6 +78,5 @@
     "max-classes-per-file": "warn",
     "react/jsx-props-no-spreading": ["off"],
     "camelcase": "off"
-
   }
 }

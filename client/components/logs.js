@@ -2,27 +2,27 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import Header from './header'
-import Cards from './cards'
+import Logs from './log-list'
 
-import { getProducts, getRates } from '../redux/reducers/products'
+import { getProducts, getLogs } from '../redux/reducers/products'
 
 // import wave from '../assets/images/wave.jpg'
 
-const Home = () => {
+const Actions = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getProducts())
-    dispatch(getRates())
+    dispatch(getLogs())
   }, [])
 
   return (
     <div>
       <Header />
-      <Cards />
+      <Logs />
     </div>
   )
 }
 
-Home.propTypes = {}
+Actions.propTypes = {}
 
-export default Home
+export default Actions

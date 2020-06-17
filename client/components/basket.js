@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import Header from './header'
-import Cards from './cards'
+import Basket from './basket-products'
 
 import { getProducts, getRates } from '../redux/reducers/products'
 
 // import wave from '../assets/images/wave.jpg'
 
-const Home = () => {
+const BasketList = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getProducts())
@@ -18,11 +18,11 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <Cards />
+      <Basket />
     </div>
   )
 }
 
-Home.propTypes = {}
+BasketList.propTypes = {}
 
-export default Home
+export default BasketList

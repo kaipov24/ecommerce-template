@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
 
+const { readFile, writeFile, unlink } = require('fs').promises
 const data = require('./data')
 
 const Root = () => ''
@@ -33,6 +34,15 @@ let connections = []
 const port = process.env.PORT || 8090
 const server = express()
 
+const saveFile = async (logs) => {
+  return writeFile(`${__dirname}/logs.json`, JSON.stringify(logs), { encoding: 'utf8' })
+}
+const readingFile = async () => {
+  return readFile(`${__dirname}/logs.json`, { encoding: 'utf8' })
+    .then((datas) => JSON.parse(datas))
+    .catch(async () => [])
+}
+
 const middleware = [
   cors(),
   express.static(path.resolve(__dirname, '../dist/assets')),
@@ -43,9 +53,22 @@ const middleware = [
 
 middleware.forEach((it) => server.use(it))
 
-server.post('/api/v1/logs', (req, res) => {
-  console.log(req.body)
-  res.json(req.body)
+server.post('/api/v1/logs', async (req, res) => {
+  const logs = await readingFile()
+  const newReqBody = { ...req.body, date: new Date() }
+  const newLogs = [...logs, newReqBody]
+  await saveFile(newLogs)
+  res.json({ status: 'success' })
+})
+
+server.get('/api/v1/logs', async (req, res) => {
+  const logs = await readingFile()
+  res.json(logs)
+})
+
+server.delete('/api/v1/logs', (req, res) => {
+  unlink(`${__dirname}/logs.json`)
+  res.json({ status: 'ok' })
 })
 
 server.get('/api/v1/products', (req, res) => {
